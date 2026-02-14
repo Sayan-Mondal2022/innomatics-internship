@@ -1,6 +1,5 @@
 # Innomatics Internship Assignment Repository
 
-## 📖 About
 This repository contains all the assignments and practice tasks completed during my internship. It showcases my daily learning progress, hands-on implementations, and problem-solving skills using Python and related technologies.
 
 
