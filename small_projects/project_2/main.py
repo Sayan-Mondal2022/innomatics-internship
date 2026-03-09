@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query
+from schemas import Product
  
 app = FastAPI()
  
@@ -16,17 +17,12 @@ def home():
     return {'message': 'Welcome to our E-commerce API'}
  
 # ── Endpoint 1 — Return all products ──────────────────────────
-@app.get('/products')
+@app.get('/products', response_model=list[Product])
 def get_all_products():
-    return {'products': products, 'total': len(products)}
+    if products:
+        return products
+    return []
  
-# ── Endpoint 2 — Return one product by its ID ──────────────────
-@app.get('/products/{product_id}')
-def get_product(product_id: int):
-    for product in products:
-        if product['id'] == product_id:
-            return {'product': product}
-    return {'error': 'Product not found'}
 
 @app.get('/products/filter')
 def filter_products(
@@ -34,15 +30,24 @@ def filter_products(
     max_price: int  = Query(None, description='Maximum price'),
     in_stock:  bool = Query(None, description='True = in stock only')
 ):
-    result = products          # start with all products
- 
-    if category:
+    result = products
+
+    if category is not None:
         result = [p for p in result if p['category'] == category]
- 
-    if max_price:
+
+    if max_price is not None:
         result = [p for p in result if p['price'] <= max_price]
- 
+
     if in_stock is not None:
         result = [p for p in result if p['in_stock'] == in_stock]
- 
-    return {'filtered_products': result, 'count': len(result)}
+
+    return result
+
+
+# ── Endpoint 2 — Return one product by its ID ──────────────────
+@app.get('/products/{product_id}', response_model=Product)
+def get_product(product_id: int):
+    for product in products:
+        if product['id'] == product_id:
+            return product
+    return {}
