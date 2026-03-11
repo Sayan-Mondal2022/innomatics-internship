@@ -35,7 +35,6 @@ products = [
 ]
 
 orders = []
-order_counter = 1
 
 feedback = []
 
@@ -126,27 +125,46 @@ def get_product(product_id: int):
     return {"error": "Product not found"}
 
 
+# QUESTION (bonus): Order Status Tracker
 @app.post("/orders")
 def place_order(order_data: OrderRequest):
-    global order_counter
-    product = next((p for p in products if p["id"] == order_data.product_id), None)
+    product = get_product(order_data)
     if product is None:
         return {"error": "Product not found"}
     if not product["in_stock"]:
         return {"error": f"{product['name']} is out of stock"}
     total_price = product["price"] * order_data.quantity
     order = {
-        "order_id": order_counter,
+        "order_id": len(orders) + 1,
         "customer_name": order_data.customer_name,
         "product": product["name"],
         "quantity": order_data.quantity,
         "delivery_address": order_data.delivery_address,
         "total_price": total_price,
-        "status": "confirmed",
+        "status": "pending",
     }
     orders.append(order)
-    order_counter += 1
     return {"message": "Order placed successfully", "order": order}
+
+
+# QUESTION (bonus): Order Status Tracker
+@app.get("/orders/{order_id}")
+def get_order_by_id(order_id: int):
+    for order in orders:
+        if order["order_id"] == order_id:
+            return {"order": order}
+    return {"error": "Order not found"}
+
+
+# QUESTION (bonus): Order Status Tracker
+@app.patch("/orders/{order_id}/confirm")
+def change_order_status(order_id: int):
+    for order in orders:
+        if order["order_id"] == order_id:
+            order["status"] = "confirmed"
+            return {"message": "Order confirmed", "order": order}
+
+    return {"error": "Order not found"}
 
 
 def get_product(item: OrderItem) -> dict:
