@@ -50,6 +50,7 @@ def get_all_products():
     return {"products": products, "total": len(products)}
 
 
+# QUESTION - 1: Filter Products by Minimum Price
 @app.get("/products/filter")
 def filter_products(
     category: str = Query(None),
@@ -70,8 +71,9 @@ def filter_products(
     return {"filtered_products": result, "count": len(result)}
 
 
+# QUESTION - 4: Build a Product Summary Dashboard
 @app.get("/products/summary")
-def get_store_summary():
+def get_product_summary():
     in_stock_count = 0
     out_of_stock_count = 0
     total_products = 0
@@ -107,6 +109,7 @@ def get_store_summary():
     }
 
 
+# QUESTION - 2: Get Only the Price of a Product
 @app.get("/products/{product_id}/price")
 def get_product_price(product_id: int):
     for product in products:
@@ -146,9 +149,49 @@ def place_order(order_data: OrderRequest):
     return {"message": "Order placed successfully", "order": order}
 
 
+def get_product(item: OrderItem) -> dict:
+    for product in products:
+        if item.product_id == product["id"]:
+            return product
+
+
+# QUESTION - 5: Validate & Place a Bulk Order
 @app.post("/orders/bulk")
-def bulk_orders():
-    pass
+def bulk_orders(data: BulkOrder):
+    confirmed_items = []
+    failed_items = []
+    total = 0
+
+    for item in data.items:
+        product = get_product(item)
+
+        if product and product["in_stock"]:
+            total += product["price"] * item.quantity
+            confirmed_items.append(
+                {
+                    "product": product["name"],
+                    "qty": item.quantity,
+                    "subtotal": product["price"] * item.quantity,
+                }
+            )
+        elif product:
+            failed_items.append(
+                {
+                    "product_id": item.product_id,
+                    "reason": f"{product['name']} is out of stock",
+                }
+            )
+        else:
+            failed_items.append(
+                {"product_id": item.product_id, "reason": "Product Not Found"}
+            )
+
+    return {
+        "company": data.company_name,
+        "confirmed": confirmed_items,
+        "failed": failed_items,
+        "grand_total": total,
+    }
 
 
 @app.get("/orders")
@@ -156,6 +199,7 @@ def get_all_orders():
     return {"orders": orders, "total_orders": len(orders)}
 
 
+# QUESTION - 3: Accept Customer Feedback
 @app.post("/feedback")
 def create_feedback(customer_feedback: CustomerFeedback):
     feedback.append(customer_feedback)
