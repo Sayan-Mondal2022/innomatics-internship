@@ -1,0 +1,92 @@
+products = [
+    {
+        "id": 1,
+        "name": "Lenovo Ideapad S145",
+        "category": "Electronics",
+        "in_stock": True,
+    },
+    {
+        "id": 2,
+        "name": "Apple MacBook Air M5",
+        "category": "Electronics",
+        "in_stock": True,
+    },
+    {
+        "id": 3,
+        "name": "Samsung Galaxy S23",
+        "category": "Electronics",
+        "in_stock": False,
+    },
+    {
+        "id": 4,
+        "name": "Sony WH-1000XM5 Headphones",
+        "category": "Accessories",
+        "in_stock": True,
+    },
+    {
+        "id": 5,
+        "name": "Logitech MX Master 3 Mouse",
+        "category": "Accessories",
+        "in_stock": True,
+    },
+    {
+        "id": 6,
+        "name": "HP Pavilion Gaming Laptop",
+        "category": "Electronics",
+        "in_stock": False,
+    },
+    {
+        "id": 7,
+        "name": "Amazon Echo Dot (5th Gen)",
+        "category": "Smart Home",
+        "in_stock": True,
+    },
+    {
+        "id": 8,
+        "name": "Canon EOS 1500D Camera",
+        "category": "Electronics",
+        "in_stock": True,
+    },
+    {
+        "id": 9,
+        "name": "Dell 24-inch Monitor",
+        "category": "Electronics",
+        "in_stock": False,
+    },
+    {
+        "id": 10,
+        "name": "Apple iPad 10th Generation",
+        "category": "Electronics",
+        "in_stock": True,
+    },
+    {
+        "id": 11,
+        "name": "Classmate Notebook",
+        "category": "Stationery",
+        "in_stock": True,
+    },
+    {
+        "id": 12,
+        "name": "Cello Butterflow Ball Pen",
+        "category": "Stationery",
+        "in_stock": True,
+    },
+    {
+        "id": 13,
+        "name": "Apsara Pencil Pack",
+        "category": "Stationery",
+        "in_stock": True,
+    },
+    {
+        "id": 14,
+        "name": "Faber-Castell Highlighter Set",
+        "category": "Stationery",
+        "in_stock": False,
+    },
+    {
+        "id": 15,
+        "name": "Doms Geometry Box",
+        "category": "Stationery",
+        "in_stock": True,
+    },
+]

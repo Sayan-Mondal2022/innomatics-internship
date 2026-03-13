@@ -1,11 +1,28 @@
 from fastapi import FastAPI, status, HTTPException, Query
-from schemas import Product, Customer, OrderRequest
+from schemas import Product, Customer, OrderRequest, ProductsResponse
 from helper import find_product
+from data import products
 
 app = FastAPI()
 
-products = []
 cart = []
+orders = []
+
+
+@app.get(
+    "/api/products", response_model=ProductsResponse, status_code=status.HTTP_200_OK
+)
+def get_products():
+    if not products:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="PRODUCTS NOT FOUND"
+        )
+
+    return {
+        "message": "Products has been fetched",
+        "products": products,
+        "total_products": len(products),
+    }
 
 
 @app.post("/api/cart/add", status_code=status.HTTP_201_CREATED)

@@ -2,10 +2,16 @@ from pydantic import BaseModel, Field
 
 
 class Product(BaseModel):
-    product_id: int = Field(gt=0)
+    id: int = Field(gt=0)
     name: str = Field(min_length=2, max_length=100)
     category: str = Field(min_length=2)
     in_stock: bool = True
+
+
+class ProductsResponse(BaseModel):
+    message: str
+    products: list[Product]
+    total_products: int
 
 
 class Customer(BaseModel):
