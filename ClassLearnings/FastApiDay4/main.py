@@ -1,12 +1,34 @@
-from fastapi import FastAPI, status, HTTPException, Query
+from fastapi import FastAPI, status, HTTPException, Query, Depends
 from schemas import Product, Customer, OrderRequest, ProductsResponse
 from helper import find_product
 from data import products
 
+import models
+from sqlalchemy.orm import Session
+from database import Base, engine, get_db
+
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
 
 cart = []
 orders = []
+
+
+@app.post("/api/products")
+def create_product(product: Product, db: Session = Depends(get_db)):
+
+    new_product = models.Product(
+        id=product.id,
+        name=product.name,
+        category=product.category,
+        in_stock=product.in_stock,
+    )
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+
+    return new_product
 
 
 @app.get(
