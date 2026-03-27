@@ -11,6 +11,8 @@ import models
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database import Base, engine, get_db
+
+# Try using argon2 instead
 import hashlib
 from passlib.context import CryptContext
 
