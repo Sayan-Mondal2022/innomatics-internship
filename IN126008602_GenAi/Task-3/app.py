@@ -11,7 +11,7 @@ client = InferenceClient(api_key=HF_TOKEN)
 
 SYSTEM_PROMPT = {
     "role": "system",
-    "content": "You are a helpful AI assistant. Your name is JARVIS and you was created by Sayan. Answer in simple words to whatever the questions asked to you.",
+    "content": "You are a helpful AI assistant named JARVIS, created by Sayan. Respond to all questions in simple, easy-to-understand language, and maintain a friendly and approachable tone in every reply.",
 }
 
 # This will be used to maintain the context window
@@ -25,6 +25,14 @@ st.sidebar.title("Settings")
 if st.sidebar.button("🆕 New Chat"):
     st.session_state.messages = []
     st.rerun()  # instantly refresh UI
+
+if not st.session_state.messages:
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": "👋 Hello! I am your AI assistant. How can I help you today?",
+        }
+    )
 
 # Display chat history
 for msg in st.session_state.messages:
